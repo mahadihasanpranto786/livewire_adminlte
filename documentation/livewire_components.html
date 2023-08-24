@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Laravel-Docs</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/images/logo/Logomark.svg">
+    <link
+        href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+        rel='stylesheet' type='text/css'>
+    <!-- FontAwesome JS -->
+    <script defer src="assets/fontawesome/js/all.js"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+
+<body class="body-pink">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header border-bottom product-grid">
+            <div class="container ">
+                <div class="branding  mb-0">
+                    <h1 class="logo">
+                        <a href="index.html">
+                            <span aria-hidden="true" class="icon_documents_alt icon "></span>
+                            <span class="text-highlight"><img src="assets/images/logo/Logotype.svg" height="70"
+                                    width="100" alt=""></span><span class="text-bold text-dark">Docs</span>
+                        </a>
+                    </h1>
+                </div>
+                <!--//branding-->
+
+
+                <div class="top-search-box">
+                    <form class="form-inline search-form justify-content-center" action="" method="get">
+
+                        <input type="text" placeholder="Search..." name="search" class="form-control">
+
+                        <button type="submit" class="btn search-btn" value="Search"><i
+                                class="fas fa-search"></i></button>
+
+                    </form>
+                </div>
+
+            </div>
+            <!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class=" text-dark" href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active  text-dark">Livewire Installations</li>
+                </ol>
+                <div id="doc-header" class="doc-header text-center">
+                    <h1 class="doc-title"><span aria-hidden="true" class="icon icon_puzzle_alt"></span>
+                        Livewire Installations and AdminLTE Mastering
+                    </h1>
+                    <div class="meta"><i class="far fa-clock"></i> Last updated: August 9th, 2023</div>
+                </div><!--//doc-header-->
+                <div class="doc-body row">
+                    <div class="doc-content col-md-9 col-12 order-1">
+                        <div class="content-inner">
+                            <section id="dashboards" class="doc-section">
+
+                                <h4 class="block-title">Installations</h4>
+                                <h6 class="block-title">Step One - Livewire Install</h6>
+                                <p class="m-2"><i class="fa-solid fa-caret-right"></i> For Install Livewire enter
+                                    this command
+                                </p>
+                                <code>
+                                    composer require livewire/livewire
+                                    <br>
+                                    <br>
+                                    php artisan livewire:publish --config
+                                    <br>
+                                    php artisan livewire:publish --assets
+                                </code>
+                                <div class="row simplelightbox-gallery-1">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i> After publishing
+                                        config and asset if you do not configure the path in <b> config/livewire.php</b>
+                                        -<br>
+                                        <b>'asset_url' => null</b>
+                                        to <b>'asset_url' => env('APP_URL')</b> and
+                                        <b>'app_url' => null</b>
+                                        to <b>'app_url' => env('APP_URL') </b> by default it will not find the livewire
+                                        path
+                                        by entering <strong>(http://localhost/livewire_admin/public/dashboard)</strong>
+                                        this link
+                                        .Its only work in server section <strong>php artisan server -
+                                            (http://127.0.0.1:8000/dashboard)</strong>
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="screenshot-holder">
+
+                                                <a href="assets/images/components/null_asset_url.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/null_asset_url.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+
+                                            <p class="text-success">works fine in - http://127.0.0.1:8000/dashboard</p>
+
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/work_asset_live.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/work_asset_live.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                            <p class="text-danger">Not works in -
+                                                http://localhost/livewire_admin/public/dashboard
+                                            </p>
+
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/null_asset_live_wire.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/null_asset_live_wire.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row simplelightbox-gallery-1">
+                                        <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i> And If you
+                                            change
+                                            the asset path in <b> config/livewire.php</b> -<br>
+                                            <b>'asset_url' => null</b>
+                                            to <b>'asset_url' => env('APP_URL')</b> and
+                                            <b>'app_url' => null</b>
+                                            to <b>'app_url' => env('APP_URL') </b> then it will not find the livewire
+                                            path
+                                            by entering
+                                            <strong> (http://127.0.0.1:8000/dashboard) </strong> this
+                                            link
+                                            .Its only work in public section <strong>
+                                                (http://localhost/livewire_admin/public/dashboard) </strong>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-6 col-12">
+                                                <div class="screenshot-holder">
+
+                                                    <a href="assets/images/components/config_livewire.png"><img
+                                                            class="img-fluid"
+                                                            src="assets/images/components/config_livewire.png"
+                                                            alt="screenshot" /></a>
+
+                                                </div>
+                                                <div class="screenshot-holder">
+
+                                                    <a href="assets/images/components/env_emample.png"><img
+                                                            class="img-fluid"
+                                                            src="assets/images/components/env_emample.png"
+                                                            alt="screenshot" /></a>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+
+                                                <p class="text-success">works fine in -
+                                                    http://localhost/livewire_admin/public/dashboard</p>
+                                                <div class="screenshot-holder">
+                                                    <a href="assets/images/components/livewire_live_work1.png"><img
+                                                            class="img-fluid"
+                                                            src="assets/images/components/livewire_live_work1.png"
+                                                            alt="screenshot" /></a>
+
+                                                </div>
+                                                <p class="text-danger">Not works in - http://127.0.0.1:8000/dashboard
+                                                </p>
+                                                <div class="screenshot-holder">
+                                                    <a href="assets/images/components/public_livewire.png"><img
+                                                            class="img-fluid"
+                                                            src="assets/images/components/public_livewire.png"
+                                                            alt="screenshot" /></a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </section>
+
+                            <section id="step-2" class="doc-section">
+                                <p class="m-2">
+                                <h6 class="block-title">Step Two - Livewire AdminLTE mastering</h6>
+                                <i class="fa-solid fa-caret-right"></i> For Install AdminLTE enter
+                                this command
+                                </p>
+                                <code>
+                                    composer require "almasaeed2010/adminlte=~3.2"
+                                </code>
+
+
+                                <div class="row simplelightbox-gallery-1">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i> After installed the
+                                        template you can see the folder info-</p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/alte_menu.png"><img class="img-fluid"
+                                                src="assets/images/components/alte_menu.png" alt="screenshot" /></a>
+
+                                    </div>
+                                </div>
+                                <div class="row simplelightbox-gallery-1">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i> From AdminLTE
+                                        all plugin, images and css copy and pest the main custom directory
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/before_alte.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/before_alte.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/after_alte.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/after_alte.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row simplelightbox-gallery-1">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i> From AdminLTE
+                                        <b>index.html</b> customized the Nav-Header, Side-bar, Main-Section and
+                                        Footer-Section
+                                        included into <b>master_layout.blade.php</b> page like this-
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/master_layout.png"><img class="img-fluid"
+                                                src="assets/images/components/master_layout.png"
+                                                alt="screenshot" /></a>
+
+                                    </div>
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                        If you use @vite you have to run this command <code>npm run dev</code> when you
+                                        start or load the projects.
+                                        <br>
+                                        <i class="fa-solid fa-caret-right"></i> If you use custom asset you have to
+                                        run this command <code>npm run build</code>
+                                        for first time.
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/image_2023_08_23T13_59_28_112Z.png"><img
+                                                class="img-fluid"
+                                                src="assets/images/components/image_2023_08_23T13_59_28_112Z.png"
+                                                alt="screenshot" /></a>
+
+                                    </div>
+                                </div>
+                                <div class="row simplelightbox-gallery-1">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i> Link up the
+                                        master_layout.blade.php
+                                        into the config/livewire - <b>'layout' => 'layouts.app'</b> to
+                                        <b>'layout' => 'backend.master_layout'</b>
+                                        like this-
+                                    </p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/master_link.png"><img class="img-fluid"
+                                                src="assets/images/components/master_link.png" alt="screenshot" /></a>
+
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section id="step-3" class="doc-section">
+                                <p class="m-2">
+                                <h6 class="block-title">Step Three -Make Livewire
+                                    Components and Load the View into "backend/DashboardController.php"
+                                </h6>
+                                <i class="fa-solid fa-caret-right"></i> For make Component enter
+                                this command
+                                </p>
+                                <code>
+                                    php artisan make:livewire DashboardComponent <br>
+                                </code><span> this will create two files - one is <b>livewire/DashboardComponent.php</b>
+                                    and another is view <b>livewire/dashboard-component.blade.php</b></span>
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/component_dashboard_controller.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/component_dashboard_controller.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/component_dashboard_view.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/component_dashboard_view.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="mt-5"> <i class="fa-solid fa-caret-right"></i>
+                                    For make Controller enter this command
+                                </p>
+                                <code>
+                                    php artisan make:controller DashboardController -r
+                                </code>
+                                <p class="m-2">
+                                    <i class="fa-solid fa-caret-right"></i> Also Create a view called
+                                    <b>backend/dashboard.blade.php</b>
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                                backend/DashboardController.php</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/dashboard_controller.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/dashboard_controller.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                            <p class="mb-0"> <i class="fa-solid fa-caret-right"></i>
+                                                backend/dashboard.blade.php</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/dashboard_view_page.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/dashboard_view_page.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                                Route web.php</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/dashboard_route.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/dashboard_route.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row simplelightbox-gallery-1">
+
+                                    <h3 class="mt-5 mb-0"> <i class="fa-solid fa-caret-right"></i>
+                                        For test Components </h3>
+                                    <div class="row">
+
+                                        <div class="col-md-6 col-12">
+                                            <p class="mb-0 mt-5"> <b>livewire/DashboardComponent.php</b> </p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/components_controller_check.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/components_controller_check.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <p class="mb-0 mt-5"> <b>livewire/dashboard-component.blade.php</b> </p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/components_view_check.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/components_view_check.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="screenshot-holder">
+                                            <a href="assets/images/components/components_result.png"><img
+                                                    class="img-fluid"
+                                                    src="assets/images/components/components_result.png"
+                                                    alt="screenshot" /></a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section id="step-4" class="doc-section">
+                                <h6 class="block-title mt-4">Step Four: Disabling Browser Reload with <a
+                                        href="https://github.com/turbolinks/turbolinks">Turbolinks</a></h6>
+
+                                <p> <i class="fa-solid fa-caret-right"></i> For Install Turbolinks enter
+                                    this command
+                                </p>
+                                <code>
+                                    npm install --save turbolinks
+                                    <br>
+                                    npm run dev
+                                </code>
+                                <p class="mt-3"> <i class="fa-solid fa-caret-right"></i> Add the code into
+                                    <b>resources/js/app.js</b>
+                                </p>
+                                <code>
+                                    import Turbolinks from "turbolinks";
+                                    Turbolinks.start()
+                                    <br>
+                                    <br>
+                                    php artisan optimize:clear
+                                </code>
+                                <br>
+                                <hr>
+                                <p>or</p>
+                                <code>
+                                    const Turbolinks = require("turbolinks")
+                                    Turbolinks.start()
+                                    <br>
+                                    <br>
+                                    php artisan optimize:clear
+                                </code>
+                                <br>
+                                <a href="https://laravel-livewire.com/docs/2.x/upgrading#turbolinks">Turbolinks Script
+                                    linkup in your master click here</a>
+                                <div class="row simplelightbox-gallery-1">
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/turboLink.png"><img class="img-fluid"
+                                                src="assets/images/components/turboLink.png" alt="screenshot" /></a>
+
+                                    </div>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/turbolinks_set.png"><img class="img-fluid"
+                                                src="assets/images/components/turbolinks_set.png"
+                                                alt="screenshot" /></a>
+
+                                    </div>
+                                </div>
+                            </section>
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+                        <div id="doc-nav" class="doc-nav">
+                            <ul id="doc-menu" class="nav doc-menu flex-column sticky">
+                                <li class="nav-item">
+                                    <a class="nav-link scrollto" href="#dashboards">Installations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav doc-sub-menu nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link scrollto" href="#step-2">Step Two - Livewire AdminLTE
+                                                mastering</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link scrollto" href="#step-3">Step Three - Make Livewire
+                                                Components and Load the View</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link scrollto" href="#step-4">Step Four - Disabling Browser
+                                                Reload with Turbolinks</a>
+                                        </li>
+
+                                    </ul><!--//nav-->
+                                    <!--//nav-->
+                                </li>
+
+                            </ul><!--//doc-menu-->
+                        </div><!--//doc-nav-->
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->
+            </div><!--//container-->
+        </div>
+    </div><!--//page-wrapper-->
+
+    <footer id="footer" class="footer text-center">
+        <div class="container">
+
+            <small class="copyright">Copyright © 2023 All Rights Reserved, <a href="https://codefixit.com/login"><b
+                        class=" text-light">CodeFix IT</b> </a></small>
+        </div><!--//container-->
+    </footer><!--//footer-->
+
+
+    <!-- Main Javascript -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/prism/prism.js"></script>
+    <script src="assets/plugins/stickyfill/dist/stickyfill.min.js"></script>
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

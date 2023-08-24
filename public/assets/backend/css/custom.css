@@ -1,0 +1,16 @@
+/* .nav-treeview .nav-item{
+margin-left:15px;
+}
+.nav-treeview .nav-item .nav-link {
+width: calc(250px - .5rem * 4);
+padding: 4px;
+font-size: 14px;
+}
+.main-header {
+background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(4,4,50,1) 64%, rgba(4,12,69,1) 100%);
+}
+
+.main-sidebar,
+.layout-navbar-fixed .wrapper .sidebar-dark-primary .brand-link:not([class*="navbar"]) {
+background: rgba(0,0,0,1);
+} */

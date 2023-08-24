@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Laravel-Docs</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/images/logo/Logomark.svg">
+    <link
+        href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+        rel='stylesheet' type='text/css'>
+    <!-- FontAwesome JS -->
+    <script defer src="assets/fontawesome/js/all.js"></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+
+<body class="body-pink">
+    <div class="page-wrapper">
+        <!-- ******Header****** -->
+        <header id="header" class="header border-bottom product-grid">
+            <div class="container ">
+                <div class="branding  mb-0">
+                    <h1 class="logo">
+                        <a href="index.html">
+                            <span aria-hidden="true" class="icon_documents_alt icon "></span>
+                            <span class="text-highlight"><img src="assets/images/logo/Logotype.svg" height="70"
+                                    width="100" alt=""></span><span class="text-bold text-dark">Docs</span>
+                        </a>
+                    </h1>
+                </div>
+                <!--//branding-->
+
+
+                <div class="top-search-box">
+                    <form class="form-inline search-form justify-content-center" action="" method="get">
+
+                        <input type="text" placeholder="Search..." name="search" class="form-control">
+
+                        <button type="submit" class="btn search-btn" value="Search"><i
+                                class="fas fa-search"></i></button>
+
+                    </form>
+                </div>
+
+            </div>
+            <!--//container-->
+        </header><!--//header-->
+        <div class="doc-wrapper">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class=" text-dark" href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active  text-dark">User Crud</li>
+                </ol>
+                <div id="doc-header" class="doc-header text-center">
+                    <h1 class="doc-title"><span aria-hidden="true" class="icon icon_puzzle_alt"></span>
+                        Livewire User Crud
+                    </h1>
+                    <div class="meta"><i class="far fa-clock"></i> Last updated: August 9th, 2023</div>
+                </div><!--//doc-header-->
+                <div class="doc-body row">
+                    <div class="doc-content col-md-9 col-12 order-1">
+                        <div class="content-inner">
+                            <section id="dashboards" class="doc-section">
+
+                                <h4 class="block-title">Component Create</h4>
+                                <h6 class="block-title">Step One - Component Create</h6>
+                                <p class="m-2"><i class="fa-solid fa-caret-right"></i> For Component Create enter
+                                    this command
+                                </p>
+                                <code>
+                                    php artisan make:livewire UserComponent
+                                </code><span> this will create two files - one is <b>livewire/UserComponent.php</b>
+                                    and another is view <b>livewire/user-component.blade.php</b></span>
+                                <div class="row simplelightbox-gallery-2">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="screenshot-holder">
+
+                                                <a href="assets/images/components/user_component.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/user_component.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="screenshot-holder">
+
+                                                <a href="assets/images/components/user_component_page.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/user_component_page.png"
+                                                        alt="screenshot" />
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section id="step-2" class="doc-section">
+                                <p class="m-2">
+                                <h6 class="block-title">Step Two - Create card view</h6>
+                                </p>
+                                <div class="row simplelightbox-gallery-1">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                        livewire/user-component.blade.php -</p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/create_user.png"><img class="img-fluid"
+                                                src="assets/images/components/create_user.png" alt="screenshot" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row simplelightbox-gallery-1">
+                                    <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                        livewire/UserComponent.php -</p>
+                                    <div class="screenshot-holder">
+                                        <a href="assets/images/components/create_user_controller.png"><img
+                                                class="img-fluid"
+                                                src="assets/images/components/create_user_controller.png"
+                                                alt="screenshot" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                                User Create View-</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/userview.png"><img class="img-fluid"
+                                                        src="assets/images/components/userview.png"
+                                                        alt="screenshot" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <p class="mb-0 mt-4"> <i class="fa-solid fa-caret-right"></i>
+                                                phpmyadmin user table -</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/myadminuser.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/myadminuser.png"
+                                                        alt="screenshot" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </section>
+                            <section id="step-3" class="doc-section">
+                                <p class="m-2">
+                                <h6 class="block-title">Step Three - User View
+                                </h6>
+                                <a href="https://laravel-livewire.com/docs/2.x/pagination#paginating-data">Click for
+                                    Pagination</a>
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/user_loist.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/user_loist.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/userviewController.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/userviewController.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="row simplelightbox-gallery-1">
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/view.png"><img class="img-fluid"
+                                                        src="assets/images/components/view.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section id="step-4" class="doc-section">
+                                <h6 class="block-title mt-4">Step Four: Edit User </h6>
+                                <div class="row simplelightbox-gallery-1">
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <p>Edit button</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/editbutton.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/editbutton.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-12">
+                                            <p>Edit Modal Hide show Script</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/modal_hide.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/modal_hide.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <p>Edit Modal</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/edit_modal.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/edit_modal.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <p>Edit Component method</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/edit_componentt.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/edit_componentt.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section id="step-5" class="doc-section">
+                                <h6 class="block-title mt-4">Step Four: Delete User </h6>
+                                <div class="row simplelightbox-gallery-1">
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <p>Delete Sweetalert</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/delete.png"><img class="img-fluid"
+                                                        src="assets/images/components/delete.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <p>Delete Button</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/delete_button.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/delete_button.png"
+                                                        alt="screenshot" /></a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <p>Delete Component method</p>
+                                            <div class="screenshot-holder">
+                                                <a href="assets/images/components/delete_component.png"><img
+                                                        class="img-fluid"
+                                                        src="assets/images/components/delete_component.png"
+                                                        alt="screenshot" />
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div><!--//content-inner-->
+                    </div><!--//doc-content-->
+                    <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+                        <div id="doc-nav" class="doc-nav">
+                            <ul id="doc-menu" class="nav doc-menu flex-column sticky">
+                                <li class="nav-item">
+                                    <a class="nav-link scrollto" href="#dashboards">Component Create</a>
+                                </li>
+                                <li class="nav-item">
+                                    <ul class="nav doc-sub-menu nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link scrollto" href="#step-2">Step Two - Create User</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link scrollto" href="#step-3">Step Three - View User</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link scrollto" href="#step-4">Step Four - Edit User </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link scrollto" href="#step-5">Step Five - Delete User </a>
+                                        </li>
+
+                                    </ul><!--//nav-->
+                                    <!--//nav-->
+                                </li>
+
+                            </ul><!--//doc-menu-->
+                        </div><!--//doc-nav-->
+                    </div><!--//doc-sidebar-->
+                </div><!--//doc-body-->
+            </div><!--//container-->
+        </div>
+    </div><!--//page-wrapper-->
+
+    <footer id="footer" class="footer text-center">
+        <div class="container">
+
+            <small class="copyright">Copyright © 2023 All Rights Reserved, <a href="https://codefixit.com/login"><b
+                        class=" text-light">CodeFix IT</b> </a></small>
+        </div><!--//container-->
+    </footer><!--//footer-->
+
+
+    <!-- Main Javascript -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/prism/prism.js"></script>
+    <script src="assets/plugins/stickyfill/dist/stickyfill.min.js"></script>
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
