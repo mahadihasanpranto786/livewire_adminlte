@@ -52,7 +52,7 @@
                         <p>
                             Users
                             <i class="right fas fa-angle-left"></i>
-                            <span class="right badge badge-danger">New</span>
+                            <span class="right badge badge-danger">Updated</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -61,6 +61,31 @@
                                 class="nav-link {{ request()->is('user_component') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create User</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item  {{ request()->is(['create_product*', 'products*',"edit_product*"]) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link  {{ request()->is(['create_product*', 'products*',"edit_product*"]) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Products
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('create_product') }}"
+                                class="nav-link {{ request()->is('create_product') ? 'active' : '' }} ">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Product</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('products') }}"
+                                class="nav-link {{ request()->is(['products', "edit_product*"]) ? 'active' : '' }} ">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Product List</p>
                             </a>
                         </li>
                     </ul>

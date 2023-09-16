@@ -21,16 +21,10 @@ class UserComponent extends Component
      }
      public function delete($userId)
      {
-         user::find($userId)->delete();
+         User::find($userId)->delete();
      }
 
-     public function render()
-     {
-         $data['userList'] = User::paginate(3);
-         return view('livewire.user-component', $data)
-             ->extends('backend.master_layout')
-             ->section('main');
-     }
+
 
     // store data
     public function store()
@@ -76,6 +70,12 @@ class UserComponent extends Component
         $this->reset();
         $this->dispatchBrowserEvent('modal', 'hide');
     }
-
+    public function render()
+    {
+        $data['userList'] = User::paginate(3);
+        return view('livewire.user-component', $data)
+            ->extends('backend.master_layout')
+            ->section('main');
+    }
 
 }

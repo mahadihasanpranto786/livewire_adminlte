@@ -105,6 +105,7 @@
     <script src="{{ URL::asset('assets/backend/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script src="{{ URL::asset('assets/backend/plugins/imageuploader/image-uploader.min.js') }}"></script>
     <script src="{{ URL::asset('assets/backend/js/custom.js') }}"></script>
+    @stack('scripts')
 
     <script>
         $(function() {
