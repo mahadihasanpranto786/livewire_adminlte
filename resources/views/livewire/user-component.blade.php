@@ -9,6 +9,11 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <form action="{{ route('user_component') }}" method="post" class="mt-0">
+                        <div class="input-group">
+                            <input type="text" class="form-control" wire:model="name" placeholder="Search product name">
+                        </div>
+                    </form>
                     <table class="table table-striped">
                         <thead>
                             <tr>

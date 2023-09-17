@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request;
 use Livewire\WithPagination;
 
 class UserComponent extends Component
 {
     use WithPagination;
     public $form = [];
+    public $name;
     protected $listeners = ['delete' => 'delete'];
     //delete Data
     public function showDeleteConfirmation($userId)
@@ -69,10 +71,16 @@ class UserComponent extends Component
         $this->reset();
         $this->dispatchBrowserEvent('modal', 'hide');
     }
-
+    public function getUsersProperty(Request $request)
+    {
+        return User::when($this->name, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $this->name . '%');
+            })
+            ->paginate(10);
+    }
     public function render()
     {
-        $data['userList'] = User::paginate(10);
+        $data["userList"] = $this->users;
         return view('livewire.user-component', $data)
             ->extends('backend.master_layout')
             ->section('main');
