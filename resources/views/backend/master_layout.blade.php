@@ -106,7 +106,7 @@
     <script src="{{ URL::asset('assets/backend/plugins/imageuploader/image-uploader.min.js') }}"></script>
     <script src="{{ URL::asset('assets/backend/js/custom.js') }}"></script>
 
-    <script>
+    {{-- <script>
         $(function() {
             //Initialize Select2 Elements
             $('.select2').select2();
@@ -138,7 +138,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    </script>
+    </script> --}}
 
 </body>
 

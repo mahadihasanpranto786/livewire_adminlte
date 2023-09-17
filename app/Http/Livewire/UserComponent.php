@@ -14,23 +14,16 @@ class UserComponent extends Component
     use WithPagination;
     public $form = [];
     protected $listeners = ['delete' => 'delete'];
-     //delete Data
-     public function showDeleteConfirmation($userId)
-     {
-         $this->emit('showDeleteConfirmation', $userId);
-     }
-     public function delete($userId)
-     {
-         user::find($userId)->delete();
-     }
+    //delete Data
+    public function showDeleteConfirmation($userId)
+    {
+        $this->emit('showDeleteConfirmation', $userId);
+    }
+    public function delete($userId)
+    {
+        user::find($userId)->delete();
+    }
 
-     public function render()
-     {
-         $data['userList'] = User::paginate(3);
-         return view('livewire.user-component', $data)
-             ->extends('backend.master_layout')
-             ->section('main');
-     }
 
     // store data
     public function store()
@@ -77,5 +70,11 @@ class UserComponent extends Component
         $this->dispatchBrowserEvent('modal', 'hide');
     }
 
-
+    public function render()
+    {
+        $data['userList'] = User::paginate(10);
+        return view('livewire.user-component', $data)
+            ->extends('backend.master_layout')
+            ->section('main');
+    }
 }

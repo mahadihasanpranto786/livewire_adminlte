@@ -2,7 +2,7 @@
 
     <div class="row mt-1">
         <div class="col-md-8">
-            <div class="card p-3">
+            <div class="card p-3 card-outline card-primary">
                 <div class="card-header">
                     <div class="card-title">
                         <h2> User List</h2>
@@ -30,15 +30,15 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->created_at }}</td>
                                     <td>
-                                        <a class="btn btn-danger btn-xs  "
-                                            wire:click.prevent='showDeleteConfirmation({{ $user->id }})'
-                                            data-toggle="modal">Delete</a>
-
-
                                         <button wire:click.prevent="editUser({{ $user->id }})" type="button"
                                             class="btn btn-xs btn-primary">
-                                            Edit
+                                           <i class="fa fa-edit" aria-hidden="true"></i> Edit
                                         </button>
+                                        <a class="btn btn-danger btn-xs  "
+                                            wire:click.prevent='showDeleteConfirmation({{ $user->id }})'
+                                            data-toggle="modal"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+
+
 
                                     </td>
                                 </tr>
@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <div class="card card-outline card-primary">
                 <div class="card-header">
                     <div class="card-title">
                         <h2>Create User</h2>
@@ -119,7 +119,7 @@
         <!-- Use wire:ignore.self to prevent Livewire from managing this modal -->
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header card-outline card-primary">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Edit User</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
