@@ -81,7 +81,7 @@
                                         <img class="mt-2" src="{{ $image->temporaryUrl() }}" height="100"
                                             width="100">
                                     @else
-                                    <img class="mt-2" src="{{ (Storage::disk('public')->url("uploads/products/".$product->image)) ?? '' }}" height="100"
+                                    <img class="mt-2" src="{{ URL::asset('storage/uploads/products/'.$product->image) ?? '' }}" height="100"
                                     width="100">
                                      @endif
                                 </div>

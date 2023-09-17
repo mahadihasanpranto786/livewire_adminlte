@@ -3,8 +3,9 @@
 namespace Laravel\Prompts\Themes\Default;
 
 use Laravel\Prompts\MultiSelectPrompt;
+use Laravel\Prompts\Themes\Contracts\Scrolling;
 
-class MultiSelectPromptRenderer extends Renderer
+class MultiSelectPromptRenderer extends Renderer implements Scrolling
 {
     use Concerns\DrawsBoxes;
     use Concerns\DrawsScrollbars;
@@ -34,6 +35,7 @@ class MultiSelectPromptRenderer extends Renderer
                     $this->truncate($prompt->label, $prompt->terminal()->cols() - 6),
                     $this->renderOptions($prompt),
                     color: 'yellow',
+                    info: count($prompt->options) > $prompt->scroll ? (count($prompt->value()).' selected') : '',
                 )
                 ->warning($this->truncate($prompt->error, $prompt->terminal()->cols() - 5)),
 
@@ -41,6 +43,7 @@ class MultiSelectPromptRenderer extends Renderer
                 ->box(
                     $this->cyan($this->truncate($prompt->label, $prompt->terminal()->cols() - 6)),
                     $this->renderOptions($prompt),
+                    info: count($prompt->options) > $prompt->scroll ? (count($prompt->value()).' selected') : '',
                 )
                 ->when(
                     $prompt->hint,
@@ -55,11 +58,11 @@ class MultiSelectPromptRenderer extends Renderer
      */
     protected function renderOptions(MultiSelectPrompt $prompt): string
     {
-        return $this->scroll(
-            collect($prompt->options)
-                ->values()
-                ->map(fn ($label) => $this->truncate($this->format($label), $prompt->terminal()->cols() - 12))
-                ->map(function ($label, $index) use ($prompt) {
+        return $this->scrollbar(
+            collect($prompt->visible())
+                ->map(fn ($label) => $this->truncate($label, $prompt->terminal()->cols() - 12))
+                ->map(function ($label, $key) use ($prompt) {
+                    $index = array_search($key, array_keys($prompt->options));
                     $active = $index === $prompt->highlighted;
                     if (array_is_list($prompt->options)) {
                         $value = $prompt->options[$index];
@@ -83,9 +86,11 @@ class MultiSelectPromptRenderer extends Renderer
                         $selected => "  {$this->cyan('◼')} {$this->dim($label)}  ",
                         default => "  {$this->dim('◻')} {$this->dim($label)}  ",
                     };
-                }),
-            $prompt->highlighted,
-            min($prompt->scroll, $prompt->terminal()->lines() - 5),
+                })
+                ->values(),
+            $prompt->firstVisible,
+            $prompt->scroll,
+            count($prompt->options),
             min($this->longest($prompt->options, padding: 6), $prompt->terminal()->cols() - 6),
             $prompt->state === 'cancel' ? 'dim' : 'cyan'
         )->implode(PHP_EOL);
@@ -101,8 +106,16 @@ class MultiSelectPromptRenderer extends Renderer
         }
 
         return implode("\n", array_map(
-            fn ($label) => $this->truncate($this->format($label), $prompt->terminal()->cols() - 6),
+            fn ($label) => $this->truncate($label, $prompt->terminal()->cols() - 6),
             $prompt->labels()
         ));
+    }
+
+    /**
+     * The number of lines to reserve outside of the scrollable area.
+     */
+    public function reservedLines(): int
+    {
+        return 5;
     }
 }

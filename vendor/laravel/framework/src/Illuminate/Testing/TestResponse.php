@@ -96,6 +96,29 @@ class TestResponse implements ArrayAccess
     }
 
     /**
+     * Assert that the Precognition request was successful.
+     *
+     * @return $this
+     */
+    public function assertSuccessfulPrecognition()
+    {
+        $this->assertNoContent();
+
+        PHPUnit::assertTrue(
+            $this->headers->has('Precognition-Success'),
+            'Header [Precognition-Success] not present on response.'
+        );
+
+        PHPUnit::assertSame(
+            'true',
+            $this->headers->get('Precognition-Success'),
+            'The Precognition-Success header was found, but the value is not `true`.'
+        );
+
+        return $this;
+    }
+
+    /**
      * Assert that the response is a server error.
      *
      * @return $this
@@ -658,6 +681,20 @@ class TestResponse implements ArrayAccess
     public function assertJsonPath($path, $expect)
     {
         $this->decodeResponseJson()->assertPath($path, $expect);
+
+        return $this;
+    }
+
+    /**
+     * Assert that the given path in the response contains all of the expected values without looking at the order.
+     *
+     * @param  string  $path
+     * @param  array  $expect
+     * @return $this
+     */
+    public function assertJsonPathCanonicalizing($path, array $expect)
+    {
+        $this->decodeResponseJson()->assertPathCanonicalizing($path, $expect);
 
         return $this;
     }

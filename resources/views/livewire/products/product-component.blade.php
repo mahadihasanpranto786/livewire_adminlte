@@ -7,7 +7,7 @@
                 </div>
                 <form action="{{route("products")}}" method="post" class="float-right">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search product name">
+                        <input type="text" class="form-control"  wire:model="name" placeholder="Search product name">
                         <div class="input-group-append">
                             <button class="btn btn-secondary" type="submit">
                                 <i class="fa fa-search"></i>
@@ -39,7 +39,7 @@
                         @forelse ($productList as $product)
                             <tr>
                                 <th scope="row">{{ $sl++ }}</th>
-                                <td><img src="{{ Storage::disk('public')->url('uploads/products/' . $product->image) }}"
+                                <td><img src="{{ URL::asset('storage/uploads/products/' . $product->image) }}"
                                         class="img-fluid rounded-circle" style="height:80px; width:80px;"
                                         alt=""></td>
                                 <td>{{ $product->name }}</td>

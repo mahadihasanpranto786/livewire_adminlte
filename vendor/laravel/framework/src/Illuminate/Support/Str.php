@@ -51,6 +51,13 @@ class Str
     protected static $uuidFactory;
 
     /**
+     * The callback that should be used to generate ULIDs.
+     *
+     * @var callable|null
+     */
+    protected static $ulidFactory;
+
+    /**
      * The callback that should be used to generate random strings.
      *
      * @var callable|null
@@ -285,6 +292,19 @@ class Str
     }
 
     /**
+     * Convert the case of a string.
+     *
+     * @param  string  $string
+     * @param  int  $mode
+     * @param  string  $encoding
+     * @return string
+     */
+    public static function convertCase(string $string, int $mode = MB_CASE_FOLD, ?string $encoding = 'UTF-8')
+    {
+        return mb_convert_case($string, $mode, $encoding);
+    }
+
+    /**
      * Determine if a given string ends with a given substring.
      *
      * @param  string  $haystack
@@ -430,6 +450,10 @@ class Str
     {
         if (! is_string($value)) {
             return false;
+        }
+
+        if (function_exists('json_validate')) {
+            return json_validate($value, 512);
         }
 
         try {
@@ -1008,6 +1032,29 @@ class Str
     }
 
     /**
+     * Replace the first occurrence of the given value if it appears at the start of the string.
+     *
+     * @param  string  $search
+     * @param  string  $replace
+     * @param  string  $subject
+     * @return string
+     */
+    public static function replaceStart($search, $replace, $subject)
+    {
+        $search = (string) $search;
+
+        if ($search === '') {
+            return $subject;
+        }
+
+        if (static::startsWith($subject, $search)) {
+            return static::replaceFirst($search, $replace, $subject);
+        }
+
+        return $subject;
+    }
+
+    /**
      * Replace the last occurrence of a given value in the string.
      *
      * @param  string  $search
@@ -1017,6 +1064,8 @@ class Str
      */
     public static function replaceLast($search, $replace, $subject)
     {
+        $search = (string) $search;
+
         if ($search === '') {
             return $subject;
         }
@@ -1025,6 +1074,29 @@ class Str
 
         if ($position !== false) {
             return substr_replace($subject, $replace, $position, strlen($search));
+        }
+
+        return $subject;
+    }
+
+    /**
+     * Replace the last occurrence of a given value if it appears at the end of the string.
+     *
+     * @param  string  $search
+     * @param  string  $replace
+     * @param  string  $subject
+     * @return string
+     */
+    public static function replaceEnd($search, $replace, $subject)
+    {
+        $search = (string) $search;
+
+        if ($search === '') {
+            return $subject;
+        }
+
+        if (static::endsWith($subject, $search)) {
+            return static::replaceLast($search, $replace, $subject);
         }
 
         return $subject;
@@ -1482,11 +1554,93 @@ class Str
      */
     public static function ulid($time = null)
     {
+        if (static::$ulidFactory) {
+            return call_user_func(static::$ulidFactory);
+        }
+
         if ($time === null) {
             return new Ulid();
         }
 
         return new Ulid(Ulid::generate($time));
+    }
+
+    /**
+     * Indicate that ULIDs should be created normally and not using a custom factory.
+     *
+     * @return void
+     */
+    public static function createUlidsNormally()
+    {
+        static::$ulidFactory = null;
+    }
+
+    /**
+     * Set the callable that will be used to generate ULIDs.
+     *
+     * @param  callable|null  $factory
+     * @return void
+     */
+    public static function createUlidsUsing(callable $factory = null)
+    {
+        static::$ulidFactory = $factory;
+    }
+
+    /**
+     * Set the sequence that will be used to generate ULIDs.
+     *
+     * @param  array  $sequence
+     * @param  callable|null  $whenMissing
+     * @return void
+     */
+    public static function createUlidsUsingSequence(array $sequence, $whenMissing = null)
+    {
+        $next = 0;
+
+        $whenMissing ??= function () use (&$next) {
+            $factoryCache = static::$ulidFactory;
+
+            static::$ulidFactory = null;
+
+            $ulid = static::ulid();
+
+            static::$ulidFactory = $factoryCache;
+
+            $next++;
+
+            return $ulid;
+        };
+
+        static::createUlidsUsing(function () use (&$next, $sequence, $whenMissing) {
+            if (array_key_exists($next, $sequence)) {
+                return $sequence[$next++];
+            }
+
+            return $whenMissing();
+        });
+    }
+
+    /**
+     * Always return the same ULID when generating new ULIDs.
+     *
+     * @param  Closure|null  $callback
+     * @return Ulid
+     */
+    public static function freezeUlids(Closure $callback = null)
+    {
+        $ulid = Str::ulid();
+
+        Str::createUlidsUsing(fn () => $ulid);
+
+        if ($callback !== null) {
+            try {
+                $callback($ulid);
+            } finally {
+                Str::createUlidsNormally();
+            }
+        }
+
+        return $ulid;
     }
 
     /**

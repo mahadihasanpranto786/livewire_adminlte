@@ -3,8 +3,9 @@
 namespace Laravel\Prompts\Themes\Default;
 
 use Laravel\Prompts\SearchPrompt;
+use Laravel\Prompts\Themes\Contracts\Scrolling;
 
-class SearchPromptRenderer extends Renderer
+class SearchPromptRenderer extends Renderer implements Scrolling
 {
     use Concerns\DrawsBoxes;
     use Concerns\DrawsScrollbars;
@@ -105,17 +106,29 @@ class SearchPromptRenderer extends Renderer
             return $this->gray('  '.($prompt->state === 'searching' ? 'Searching...' : 'No results.'));
         }
 
-        return $this->scroll(
-            collect($prompt->matches())
-                ->values()
+        return $this->scrollbar(
+            collect($prompt->visible())
                 ->map(fn ($label) => $this->truncate($label, $prompt->terminal()->cols() - 10))
-                ->map(fn ($label, $i) => $prompt->highlighted === $i
-                    ? "{$this->cyan('›')} {$label}  "
-                    : "  {$this->dim($label)}  "
-                ),
-            $prompt->highlighted,
-            min($prompt->scroll, $prompt->terminal()->lines() - 7),
+                ->map(function ($label, $key) use ($prompt) {
+                    $index = array_search($key, array_keys($prompt->matches()));
+
+                    return $prompt->highlighted === $index
+                        ? "{$this->cyan('›')} {$label}  "
+                        : "  {$this->dim($label)}  ";
+                })
+                ->values(),
+            $prompt->firstVisible,
+            $prompt->scroll,
+            count($prompt->matches()),
             min($this->longest($prompt->matches(), padding: 4), $prompt->terminal()->cols() - 6)
         )->implode(PHP_EOL);
+    }
+
+    /**
+     * The number of lines to reserve outside of the scrollable area.
+     */
+    public function reservedLines(): int
+    {
+        return 7;
     }
 }

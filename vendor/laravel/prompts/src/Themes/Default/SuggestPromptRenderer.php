@@ -3,8 +3,9 @@
 namespace Laravel\Prompts\Themes\Default;
 
 use Laravel\Prompts\SuggestPrompt;
+use Laravel\Prompts\Themes\Contracts\Scrolling;
 
-class SuggestPromptRenderer extends Renderer
+class SuggestPromptRenderer extends Renderer implements Scrolling
 {
     use Concerns\DrawsBoxes;
     use Concerns\DrawsScrollbars;
@@ -96,17 +97,26 @@ class SuggestPromptRenderer extends Renderer
             return '';
         }
 
-        return $this->scroll(
-            collect($prompt->matches())
+        return $this->scrollbar(
+            collect($prompt->visible())
                 ->map(fn ($label) => $this->truncate($label, $prompt->terminal()->cols() - 10))
-                ->map(fn ($label, $i) => $prompt->highlighted === $i
+                ->map(fn ($label, $key) => $prompt->highlighted === $key
                     ? "{$this->cyan('›')} {$label}  "
                     : "  {$this->dim($label)}  "
                 ),
-            $prompt->highlighted,
-            min($prompt->scroll, $prompt->terminal()->lines() - 7),
+            $prompt->firstVisible,
+            $prompt->scroll,
+            count($prompt->matches()),
             min($this->longest($prompt->matches(), padding: 4), $prompt->terminal()->cols() - 6),
             $prompt->state === 'cancel' ? 'dim' : 'cyan'
         )->implode(PHP_EOL);
+    }
+
+    /**
+     * The number of lines to reserve outside of the scrollable area.
+     */
+    public function reservedLines(): int
+    {
+        return 7;
     }
 }
