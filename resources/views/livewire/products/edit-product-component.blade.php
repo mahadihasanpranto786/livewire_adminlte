@@ -1,7 +1,7 @@
 <div>
     <div class="row mt-1">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card  card-outline card-primary">
                 <div class="card-header">
                     <div class="card-title">
                         <h2>Edit Product</h2>

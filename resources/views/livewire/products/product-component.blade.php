@@ -1,23 +1,18 @@
 <div>
     <div class="col-md-12">
-        <div class="card p-3">
+        <div class="card p-3 card-outline card-primary">
             <div class="card-header">
                 <div class="card-title">
                     <h2> Product List</h2>
                 </div>
-                <form action="{{route("products")}}" method="post" class="float-right">
-                    <div class="input-group">
-                        <input type="text" class="form-control"  wire:model="name" placeholder="Search product name">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+
             </div>
             <div class="card-body">
-
+                <form action="{{ route('products') }}" method="post" class="mt-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control" wire:model="name" placeholder="Search product name">
+                    </div>
+                </form>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -65,7 +60,7 @@
 
                 </table>
             </div>
-            {{ $productList->links() }}
+            {{ $productList->links("pagination::bootstrap-5") }}
         </div>
     </div>
     @push('scripts')

@@ -3,9 +3,7 @@
 namespace App\Http\Livewire\Products;
 
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;

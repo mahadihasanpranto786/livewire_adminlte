@@ -72,7 +72,7 @@ class UserComponent extends Component
     }
     public function render()
     {
-        $data['userList'] = User::paginate(3);
+        $data['userList'] = User::paginate(10);
         return view('livewire.user-component', $data)
             ->extends('backend.master_layout')
             ->section('main');
