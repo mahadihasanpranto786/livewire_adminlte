@@ -25,17 +25,21 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
-final class DefaultConfiguration extends Configuration
+final readonly class DefaultConfiguration extends Configuration
 {
     public static function create(): self
     {
         return new self(
             ExtensionBootstrapCollection::fromArray([]),
             new Source(
+                null,
+                false,
                 CodeCoverageFilterDirectoryCollection::fromArray([]),
                 FileCollection::fromArray([]),
                 CodeCoverageFilterDirectoryCollection::fromArray([]),
@@ -47,16 +51,18 @@ final class DefaultConfiguration extends Configuration
                 false,
                 false,
                 false,
+                false,
+                false,
+                false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
                 false,
                 false,
                 false,
             ),
             new CodeCoverage(
-                null,
-                CodeCoverageFilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
-                CodeCoverageFilterDirectoryCollection::fromArray([]),
-                FileCollection::fromArray([]),
                 false,
                 true,
                 false,
@@ -95,7 +101,6 @@ final class DefaultConfiguration extends Configuration
             new PHPUnit(
                 null,
                 true,
-                null,
                 80,
                 \PHPUnit\TextUI\Configuration\Configuration::COLOR_DEFAULT,
                 false,
@@ -145,6 +150,7 @@ final class DefaultConfiguration extends Configuration
                 false,
                 false,
                 100,
+                0,
             ),
             TestSuiteCollection::fromArray([]),
         );

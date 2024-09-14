@@ -12,7 +12,11 @@ namespace PHPUnit\Framework\MockObject\Generator;
 use function sprintf;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/5243
  */
 final class UnknownTraitException extends \PHPUnit\Framework\Exception implements Exception
 {

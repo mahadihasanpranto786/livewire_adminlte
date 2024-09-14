@@ -14,9 +14,11 @@ use PHPUnit\Metadata\Parser\Registry;
 use ReflectionMethod;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Test
+final readonly class Test
 {
     public static function isTestMethod(ReflectionMethod $method): bool
     {

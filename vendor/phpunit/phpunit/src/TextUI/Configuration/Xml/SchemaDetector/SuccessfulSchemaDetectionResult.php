@@ -10,14 +10,22 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @psalm-immutable
+ * @immutable
  */
-final class SuccessfulSchemaDetectionResult extends SchemaDetectionResult
+final readonly class SuccessfulSchemaDetectionResult extends SchemaDetectionResult
 {
-    private readonly string $version;
+    /**
+     * @var non-empty-string
+     */
+    private string $version;
 
+    /**
+     * @param non-empty-string $version
+     */
     public function __construct(string $version)
     {
         $this->version = $version;
@@ -28,6 +36,9 @@ final class SuccessfulSchemaDetectionResult extends SchemaDetectionResult
         return true;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function version(): string
     {
         return $this->version;

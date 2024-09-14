@@ -20,7 +20,6 @@ use function rtrim;
 use function str_starts_with;
 use function trim;
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestResult;
 use PHPUnit\Logging\TestDox\TestResultCollection;
@@ -28,32 +27,36 @@ use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ResultPrinter
+final readonly class ResultPrinter
 {
-    private readonly Printer $printer;
-    private readonly bool $colors;
+    private Printer $printer;
+    private bool $colors;
+    private int $columns;
+    private bool $printSummary;
 
-    public function __construct(Printer $printer, bool $colors)
+    public function __construct(Printer $printer, bool $colors, int $columns, bool $printSummary)
     {
-        $this->printer = $printer;
-        $this->colors  = $colors;
+        $this->printer      = $printer;
+        $this->colors       = $colors;
+        $this->columns      = $columns;
+        $this->printSummary = $printSummary;
     }
 
     /**
-     * @psalm-param array<string, TestResultCollection> $tests
+     * @param array<string, TestResultCollection> $tests
      */
     public function print(array $tests): void
     {
-        foreach ($tests as $prettifiedClassName => $_tests) {
-            $this->printPrettifiedClassName($prettifiedClassName);
+        $this->doPrint($tests, false);
 
-            foreach ($_tests as $test) {
-                $this->printTestResult($test);
-            }
+        if ($this->printSummary) {
+            $this->printer->print('Summary of tests with errors, failures, or issues:' . PHP_EOL . PHP_EOL);
 
-            $this->printer->print(PHP_EOL);
+            $this->doPrint($tests, true);
         }
     }
 
@@ -63,8 +66,49 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param string $prettifiedClassName
+     * @param array<string, TestResultCollection> $tests
      */
+    private function doPrint(array $tests, bool $onlySummary): void
+    {
+        foreach ($tests as $prettifiedClassName => $_tests) {
+            $print = true;
+
+            if ($onlySummary) {
+                $found = false;
+
+                foreach ($_tests as $test) {
+                    if ($test->status()->isSuccess()) {
+                        continue;
+                    }
+
+                    $found = true;
+
+                    break;
+                }
+
+                if (!$found) {
+                    $print = false;
+                }
+            }
+
+            if (!$print) {
+                continue;
+            }
+
+            $this->printPrettifiedClassName($prettifiedClassName);
+
+            foreach ($_tests as $test) {
+                if ($onlySummary && $test->status()->isSuccess()) {
+                    continue;
+                }
+
+                $this->printTestResult($test);
+            }
+
+            $this->printer->print(PHP_EOL);
+        }
+    }
+
     private function printPrettifiedClassName(string $prettifiedClassName): void
     {
         $buffer = $prettifiedClassName;
@@ -76,18 +120,12 @@ final class ResultPrinter
         $this->printer->print($buffer . PHP_EOL);
     }
 
-    /**
-     * @throws NoDataSetFromDataProviderException
-     */
     private function printTestResult(TestDoxTestResult $test): void
     {
         $this->printTestResultHeader($test);
         $this->printTestResultBody($test);
     }
 
-    /**
-     * @throws NoDataSetFromDataProviderException
-     */
     private function printTestResultHeader(TestDoxTestResult $test): void
     {
         $buffer = ' ' . $this->symbolFor($test->status()) . ' ';
@@ -200,7 +238,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-return array{message: string, diff: string}
+     * @return array{message: string, diff: string}
      */
     private function colorizeMessageAndDiff(string $buffer, string $style): array
     {
@@ -233,7 +271,8 @@ final class ResultPrinter
         $diff    = implode(PHP_EOL, $diff);
 
         if (!empty($message)) {
-            $message = Color::colorizeTextBox($style, $message);
+            // Testdox output has a left-margin of 5; keep right-margin to prevent terminal scrolling
+            $message = Color::colorizeTextBox($style, $message, $this->columns - 7);
         }
 
         return [
@@ -278,7 +317,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param 'default'|'start'|'message'|'diff'|'trace'|'last' $type
+     * @param 'default'|'diff'|'last'|'message'|'start'|'trace' $type
      */
     private function prefixFor(string $type, TestStatus $status): string
     {
@@ -317,7 +356,7 @@ final class ResultPrinter
             return 'fg-cyan';
         }
 
-        if ($status->isRisky() || $status->isIncomplete() || $status->isWarning()) {
+        if ($status->isIncomplete() || $status->isDeprecation() || $status->isNotice() || $status->isRisky() || $status->isWarning()) {
             return 'fg-yellow';
         }
 
@@ -342,7 +381,7 @@ final class ResultPrinter
             return 'fg-cyan';
         }
 
-        if ($status->isRisky() || $status->isIncomplete() || $status->isWarning()) {
+        if ($status->isIncomplete() || $status->isDeprecation() || $status->isNotice() || $status->isRisky() || $status->isWarning()) {
             return 'fg-yellow';
         }
 
@@ -363,16 +402,12 @@ final class ResultPrinter
             return '↩';
         }
 
-        if ($status->isRisky()) {
-            return '☢';
+        if ($status->isDeprecation() || $status->isNotice() || $status->isRisky() || $status->isWarning()) {
+            return '⚠';
         }
 
         if ($status->isIncomplete()) {
             return '∅';
-        }
-
-        if ($status->isWarning()) {
-            return '⚠';
         }
 
         return '?';

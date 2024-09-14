@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Livewire\DashboardComponent;
 use Illuminate\Http\Request;
-use App\Http\Livewire\DashboardComponent;
 
 class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
     public function index()
     {
         $data['dashboardComponent'] = DashboardComponent::class;
-        return view('backend.dashboard', $data);
+        return view('backend.master_pages.dashboard', $data);
     }
 
     /**
@@ -22,7 +21,7 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        dd('d');
+        //
     }
 
     /**

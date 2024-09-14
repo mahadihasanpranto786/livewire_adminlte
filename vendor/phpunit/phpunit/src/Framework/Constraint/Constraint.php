@@ -9,20 +9,25 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function gettype;
+use function is_object;
 use function sprintf;
+use function str_replace;
+use function strpos;
+use function strtolower;
+use function substr;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Util\Exporter;
+use ReflectionObject;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract class Constraint implements Countable, SelfDescribing
 {
-    private ?Exporter $exporter = null;
-
     /**
      * Evaluates the constraint for parameter $other.
      *
@@ -62,15 +67,6 @@ abstract class Constraint implements Countable, SelfDescribing
         return 1;
     }
 
-    protected function exporter(): Exporter
-    {
-        if ($this->exporter === null) {
-            $this->exporter = new Exporter;
-        }
-
-        return $this->exporter;
-    }
-
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -87,7 +83,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @throws ExpectationFailedException
      */
-    protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): never
+    protected function fail(mixed $other, string $description, ?ComparisonFailure $comparisonFailure = null): never
     {
         $failureDescription = sprintf(
             'Failed asserting that %s.',
@@ -132,7 +128,7 @@ abstract class Constraint implements Countable, SelfDescribing
      */
     protected function failureDescription(mixed $other): string
     {
-        return $this->exporter()->export($other) . ' ' . $this->toString();
+        return Exporter::export($other) . ' ' . $this->toString();
     }
 
     /**
@@ -172,7 +168,7 @@ abstract class Constraint implements Countable, SelfDescribing
             return '';
         }
 
-        return $this->exporter()->export($other) . ' ' . $string;
+        return Exporter::export($other) . ' ' . $string;
     }
 
     /**
@@ -238,5 +234,41 @@ abstract class Constraint implements Countable, SelfDescribing
     protected function reduce(): self
     {
         return $this;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    protected function valueToTypeStringFragment(mixed $value): string
+    {
+        if (is_object($value)) {
+            $reflector = new ReflectionObject($value);
+
+            if ($reflector->isAnonymous()) {
+                $name = str_replace('class@anonymous', '', $reflector->getName());
+                $name = substr($name, 0, strpos($name, '$'));
+
+                return 'an instance of anonymous class created at ' . $name . ' ';
+            }
+
+            return 'an instance of class ' . $reflector->getName() . ' ';
+        }
+
+        $type = strtolower(gettype($value));
+
+        if ($type === 'double') {
+            $type = 'float';
+        }
+
+        if ($type === 'resource (closed)') {
+            $type = 'closed resource';
+        }
+
+        return match ($type) {
+            'array', 'integer' => 'an ' . $type . ' ',
+            'boolean', 'closed resource', 'float', 'resource', 'string' => 'a ' . $type . ' ',
+            'null'  => 'null ',
+            default => 'a value of ' . $type . ' ',
+        };
     }
 }

@@ -25,14 +25,16 @@ use stdClass;
 use Throwable;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ReturnValueGenerator
 {
     /**
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
-     * @psalm-param class-string $stubClassName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     * @param class-string     $stubClassName
      *
      * @throws Exception
      */
@@ -57,59 +59,59 @@ final class ReturnValueGenerator
             $types = [$returnType];
         }
 
-        $types = array_map('strtolower', $types);
-
         if (!$intersection) {
-            if (in_array('', $types, true) ||
-                in_array('null', $types, true) ||
-                in_array('mixed', $types, true) ||
-                in_array('void', $types, true)) {
+            $lowerTypes = array_map('strtolower', $types);
+
+            if (in_array('', $lowerTypes, true) ||
+                in_array('null', $lowerTypes, true) ||
+                in_array('mixed', $lowerTypes, true) ||
+                in_array('void', $lowerTypes, true)) {
                 return null;
             }
 
-            if (in_array('true', $types, true)) {
+            if (in_array('true', $lowerTypes, true)) {
                 return true;
             }
 
-            if (in_array('false', $types, true) ||
-                in_array('bool', $types, true)) {
+            if (in_array('false', $lowerTypes, true) ||
+                in_array('bool', $lowerTypes, true)) {
                 return false;
             }
 
-            if (in_array('float', $types, true)) {
+            if (in_array('float', $lowerTypes, true)) {
                 return 0.0;
             }
 
-            if (in_array('int', $types, true)) {
+            if (in_array('int', $lowerTypes, true)) {
                 return 0;
             }
 
-            if (in_array('string', $types, true)) {
+            if (in_array('string', $lowerTypes, true)) {
                 return '';
             }
 
-            if (in_array('array', $types, true)) {
+            if (in_array('array', $lowerTypes, true)) {
                 return [];
             }
 
-            if (in_array('static', $types, true)) {
+            if (in_array('static', $lowerTypes, true)) {
                 return $this->newInstanceOf($stubClassName, $className, $methodName);
             }
 
-            if (in_array('object', $types, true)) {
+            if (in_array('object', $lowerTypes, true)) {
                 return new stdClass;
             }
 
-            if (in_array('callable', $types, true) ||
-                in_array('closure', $types, true)) {
+            if (in_array('callable', $lowerTypes, true) ||
+                in_array('closure', $lowerTypes, true)) {
                 return static function (): void
                 {
                 };
             }
 
-            if (in_array('traversable', $types, true) ||
-                in_array('generator', $types, true) ||
-                in_array('iterable', $types, true)) {
+            if (in_array('traversable', $lowerTypes, true) ||
+                in_array('generator', $lowerTypes, true) ||
+                in_array('iterable', $lowerTypes, true)) {
                 $generator = static function (): \Generator
                 {
                     yield from [];
@@ -158,7 +160,7 @@ final class ReturnValueGenerator
     }
 
     /**
-     * @psalm-param non-empty-list<string> $types
+     * @param non-empty-list<string> $types
      */
     private function onlyInterfaces(array $types): bool
     {
@@ -172,16 +174,17 @@ final class ReturnValueGenerator
     }
 
     /**
-     * @psalm-param class-string $stubClassName
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $stubClassName
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
      * @throws RuntimeException
      */
-    private function newInstanceOf(string $stubClassName, string $className, string $methodName): MockObject
+    private function newInstanceOf(string $stubClassName, string $className, string $methodName): Stub
     {
         try {
             return (new ReflectionClass($stubClassName))->newInstanceWithoutConstructor();
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(
@@ -191,20 +194,22 @@ final class ReturnValueGenerator
                     $t->getMessage(),
                 ),
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 
     /**
-     * @psalm-param class-string $type
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param class-string     $type
+     * @param class-string     $className
+     * @param non-empty-string $methodName
      *
      * @throws RuntimeException
      */
-    private function testDoubleFor(string $type, string $className, string $methodName): MockObject
+    private function testDoubleFor(string $type, string $className, string $methodName): Stub
     {
         try {
-            return (new Generator)->getMock($type, [], [], '', false);
+            return (new Generator)->testDouble($type, false, false, [], [], '', false);
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(
@@ -214,20 +219,22 @@ final class ReturnValueGenerator
                     $t->getMessage(),
                 ),
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 
     /**
-     * @psalm-param non-empty-list<string> $types
-     * @psalm-param class-string $className
-     * @psalm-param non-empty-string $methodName
+     * @param non-empty-list<string> $types
+     * @param class-string           $className
+     * @param non-empty-string       $methodName
      *
      * @throws RuntimeException
      */
-    private function testDoubleForIntersectionOfInterfaces(array $types, string $className, string $methodName): MockObject
+    private function testDoubleForIntersectionOfInterfaces(array $types, string $className, string $methodName): Stub
     {
         try {
-            return (new Generator)->getMockForInterfaces($types);
+            return (new Generator)->testDoubleForInterfaceIntersection($types, false);
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             throw new RuntimeException(
                 sprintf(
@@ -237,6 +244,7 @@ final class ReturnValueGenerator
                     $t->getMessage(),
                 ),
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 }

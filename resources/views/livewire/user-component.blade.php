@@ -1,5 +1,4 @@
 <div>
-
     <div class="row mt-1">
         <div class="col-md-8">
             <div class="card p-3 card-outline card-primary">
@@ -20,6 +19,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -33,17 +33,17 @@
                                     <th scope="row">{{ $sl++ }}</th>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->phone }}</td>
                                     <td>{{ $user->created_at }}</td>
                                     <td>
-
-
-                                        <button wire:click.prevent="editUser({{ $user->id }})" type="button"
-                                            class="btn btn-xs btn-primary">
+                                        <button   type="button"
+                                            class="btn btn-xs btn-primary"  wire:click="editUser({{ $user->id }})">
                                          <i class="fa fa-edit"></i>   Edit
                                         </button>
                                         <a class="btn btn-danger btn-xs  "
-                                            wire:click.prevent='showDeleteConfirmation({{ $user->id }})'
-                                            data-toggle="modal"><i class="fa fa-trash"></i> Delete</a>
+                                        wire:click="delete({{ $user->id }})"
+                                       wire:confirm="Are you sure you want to delete this post?"
+                                             ><i class="fa fa-trash"></i> Delete</a>
 
                                     </td>
                                 </tr>
@@ -97,12 +97,20 @@
                             @enderror
                         </div>
                         <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="phone"wire:model.debounce.500ms="form.phone"
+                                class="form-control" placeholder="Enter user phone">
+                            @error('phone')
+                                <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" wire:model.debounce.500ms="form.password"
                                 class="form-control" placeholder="Enter  password">
-                            @error('password')
+                            {{-- @error('password')
                                 <span class="error text-danger">{{ $message }}</span>
-                            @enderror
+                            @enderror --}}
                         </div>
                         <div class="form-group">
                             <label for="password_confirmation">Confirm Password</label>
@@ -118,9 +126,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-
-    <div class="modal fade" id="exampleModalCenter" wire:ignore.self>
+    <div class="modal" id="exampleModalCenter" wire:ignore.self>
         <!-- Use wire:ignore.self to prevent Livewire from managing this modal -->
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -132,73 +138,56 @@
                 </div>
                 <div class="card  ">
                     <div class="card-body">
-                        <form wire:submit.prevent="updateUserData">
+                        <form wire:submit.prevent="update">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" wire:model.defer="updateForm.edit_name"
-                                    wire:ignore class="form-control" placeholder="Enter user name">
+                                <input type="text" wire:model.defer="updateForm.edit_name" class="form-control" placeholder="Enter user name">
                             </div>
-                            @error('edit_name')
+                            @error('updateForm.edit_name')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email"  wire:model.defer="updateForm.edit_email"
-                                    wire:ignore class="form-control" placeholder="Enter user email">
+                                <input type="email" wire:model.defer="updateForm.edit_email" class="form-control" placeholder="Enter user email">
                             </div>
-                            @error('edit_email')
+                            @error('updateForm.edit_email')
+                                <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="phone" wire:model.defer="updateForm.edit_phone" class="form-control" placeholder="Enter user phone">
+                            </div>
+                            @error('updateForm.edit_phone')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password"
-                                    wire:model.defer="updateForm.edit_password" wire:ignore class="form-control"
-                                    placeholder="Enter password">
+                                <input type="password" wire:model.defer="updateForm.password" class="form-control" placeholder="Enter password">
                             </div>
-                            @error('edit_password')
+                            @error('password')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
                             <div class="form-group">
                                 <label for="password_confirmation">Confirm Password</label>
-                                <input type="password"
-                                    wire:model.defer="updateForm.password_confirmation" wire:ignore
-                                    class="form-control" placeholder="Enter confirm password">
+                                <input type="password" wire:model.defer="updateForm.password_confirmation" class="form-control" placeholder="Enter confirm password">
                             </div>
                             <input type="hidden" id="id" wire:model.defer="updateForm.id">
                             <button class="btn btn-primary" type="submit">Update</button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 <script>
-    window.addEventListener('modal', evnet => {
-        $('#exampleModalCenter').modal(evnet.detail);
-    }, false);
-</script>
-<script>
-    document.addEventListener('livewire:load', function() {
-        Livewire.on('showDeleteConfirmation', function(userId) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#2c9b10",
-                cancelButtonColor: "#e42061",
-                confirmButtonText: "Yes, delete it!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Perform the deletion using Livewire's wire method
-                    Livewire.emit('delete', userId); // This line is redundant, remove it
-                    Swal.fire("Deleted", "Data Deleted Successfully", "success");
-                }
-            });
-        });
-    });
+  window.addEventListener('modal', event => {
+    if (event.detail == 'show') {
+        $('#exampleModalCenter').modal('show');
+    } else if (event.detail == 'hide') {
+        $('#exampleModalCenter').modal('hide');
+    }
+}, false);
 </script>

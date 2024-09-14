@@ -15,8 +15,8 @@ use function dirname;
 use function file_put_contents;
 use function preg_match;
 use function range;
+use function str_contains;
 use function str_replace;
-use function strpos;
 use function time;
 use DOMImplementation;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -40,7 +40,7 @@ final class Cobertura
         $documentType = $implementation->createDocumentType(
             'coverage',
             '',
-            'http://cobertura.sourceforge.net/xml/coverage-04.dtd'
+            'http://cobertura.sourceforge.net/xml/coverage-04.dtd',
         );
 
         $document               = $implementation->createDocument('', '', $documentType);
@@ -114,12 +114,8 @@ final class Cobertura
             $coverageData = $item->lineCoverageData();
 
             foreach ($classes as $className => $class) {
-                $complexity += $class['ccn'];
+                $complexity        += $class['ccn'];
                 $packageComplexity += $class['ccn'];
-
-                if (!empty($class['package']['namespace'])) {
-                    $className = $class['package']['namespace'] . '\\' . $className;
-                }
 
                 $linesValid   = $class['executableLines'];
                 $linesCovered = $class['executedLines'];
@@ -194,7 +190,7 @@ final class Cobertura
                 }
             }
 
-            if ($report->numberOfFunctions() === 0) {
+            if ($item->numberOfFunctions() === 0) {
                 $packageElement->setAttribute('complexity', (string) $packageComplexity);
 
                 continue;
@@ -218,29 +214,29 @@ final class Cobertura
 
             $classElement->appendChild($classLinesElement);
 
-            $functions = $report->functions();
+            $functions = $item->functions();
 
             foreach ($functions as $functionName => $function) {
                 if ($function['executableLines'] === 0) {
                     continue;
                 }
 
-                $complexity += $function['ccn'];
-                $packageComplexity += $function['ccn'];
+                $complexity          += $function['ccn'];
+                $packageComplexity   += $function['ccn'];
                 $functionsComplexity += $function['ccn'];
 
                 $linesValid   = $function['executableLines'];
                 $linesCovered = $function['executedLines'];
                 $lineRate     = $linesValid === 0 ? 0 : ($linesCovered / $linesValid);
 
-                $functionsLinesValid += $linesValid;
+                $functionsLinesValid   += $linesValid;
                 $functionsLinesCovered += $linesCovered;
 
                 $branchesValid   = $function['executableBranches'];
                 $branchesCovered = $function['executedBranches'];
                 $branchRate      = $branchesValid === 0 ? 0 : ($branchesCovered / $branchesValid);
 
-                $functionsBranchesValid += $branchesValid;
+                $functionsBranchesValid   += $branchesValid;
                 $functionsBranchesCovered += $branchesValid;
 
                 $methodElement = $document->createElement('method');
@@ -295,7 +291,7 @@ final class Cobertura
         $buffer = $document->saveXML();
 
         if ($target !== null) {
-            if (!strpos($target, '://') !== false) {
+            if (!str_contains($target, '://')) {
                 Filesystem::createDirectory(dirname($target));
             }
 

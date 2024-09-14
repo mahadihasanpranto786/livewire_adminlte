@@ -38,7 +38,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item ">
-                    <a href="{{ URL::route('dashboard') }}"
+                    <a wire:navigate.hover href="{{ URL::route('dashboard') }}"
                         class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item {{ request()->is('user_component') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->is('user_component') ? 'active' : '' }}">
+                    <a href="#"  class="nav-link {{ request()->is('user_component') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Users
@@ -57,7 +57,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('user_component') }}"
+                            <a wire:navigate.hover href="{{ route('user_component') }}"
                                 class="nav-link {{ request()->is('user_component') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create User</p>
@@ -65,7 +65,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item  {{ request()->is(['create_product*', 'products*',"edit_product*"]) ? 'menu-open' : '' }}">
+                {{-- <li class="nav-item  {{ request()->is(['create_product*', 'products*',"edit_product*"]) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link  {{ request()->is(['create_product*', 'products*',"edit_product*"]) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
@@ -89,7 +89,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
